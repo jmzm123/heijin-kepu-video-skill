@@ -10,8 +10,8 @@ import { Gallery, GALLERY_FRAMES } from "./Gallery";
 import { META, SCENES } from "./story";
 import { FPS, H, SceneIndex, W, lineText, plain, timeline } from "./timeline";
 
-// 只有背景音乐，没有配音。音量在渲染脚本里再统一做响度标准化。
-// 音乐文件放在 public/music.mp3（仓库不附带，需自行放入）；没有这个文件就渲染无声视频
+// 没有配音。音量在渲染脚本里再统一做响度标准化。
+// 默认出无声成片（背景音乐后期配）；public/ 里放了 music.mp3 就自动铺上
 const BGM_VOLUME = 0.9;
 const hasMusic = () => getStaticFiles().some((f) => f.name === "music.mp3");
 
@@ -85,7 +85,6 @@ const checkInfo = () => {
   if (META.cover.accent && !META.cover.lines.some((l) => l.includes(META.cover.accent!)))
     warnings.push("META.cover.accent 不在封面文字里，封面不会有金色强调");
   if (META.cover.scene >= SCENES.length) warnings.push("META.cover.scene 超出场景数量");
-  if (!hasMusic()) warnings.push("没有找到 public/music.mp3，成片将没有背景音乐");
   return { title: META.title, marks, warnings };
 };
 

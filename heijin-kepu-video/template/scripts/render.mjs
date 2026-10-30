@@ -1,4 +1,4 @@
-// 渲染成片：画面 + 背景音乐 → 响度标准化 → out/<标题>.mp4，再出横竖两张封面
+// 渲染成片：画面（+ 可选背景音乐）→ 响度标准化 → out/<标题>.mp4，再出横竖两张封面
 // 用法：npm run render
 import fs from "node:fs";
 import path from "node:path";
@@ -21,7 +21,7 @@ await renderMedia({
   },
 });
 
-// 纯音乐视频：两遍 loudnorm 线性标准化到 -16 LUFS、真峰值 -1.5 dB（Remotion 自带的 ffmpeg 就够，不用另装）
+// 有背景音乐时：两遍 loudnorm 线性标准化到 -16 LUFS、真峰值 -1.5 dB（Remotion 自带的 ffmpeg 就够，不用另装）
 console.log("响度标准化…");
 const LN = "loudnorm=I=-16:TP=-1.5:LRA=11";
 const probe = ffmpeg(["-hide_banner", "-i", raw, "-vn", "-af", `${LN}:print_format=json`, "-f", "null", "-"]);
@@ -37,7 +37,7 @@ if (json) {
 if (ok) fs.rmSync(raw);
 else {
   fs.renameSync(raw, final);
-  console.log("  跳过（没有背景音乐，或 ffmpeg 出错），直接用原始音量");
+  console.log("  跳过（无声成片，或 ffmpeg 出错）");
 }
 
 console.log("渲染封面…");
