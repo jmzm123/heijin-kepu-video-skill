@@ -1,0 +1,6 @@
+.DS_Store
+node_modules/
+out/
+*.zip
+# 背景音乐不随仓库分发，自行放入
+heijin-kepu-video/template/public/music.mp3
